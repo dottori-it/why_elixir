@@ -2,7 +2,7 @@ defmodule WhyElixirWeb.PageController do
   use WhyElixirWeb, :controller
 
   def index(conn, _params) do
-    render(conn, "altro.html")
+    render(conn, "index.html")
   end
 
   def prova(conn, params) do
@@ -14,10 +14,9 @@ defmodule WhyElixirWeb.PageController do
   end
 
   defp sum_numbers(current, sum) do
-    if (current != 0) do
-      sum_numbers(current - 1, sum + current)
-    else
-      sum
+    case current do
+      0 -> sum
+      _ -> sum_numbers(current - 1, sum + current)
     end
   end
 

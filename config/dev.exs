@@ -16,7 +16,12 @@ config :why_elixir, WhyElixir.Repo,
 # watchers to your application. For example, we use it
 # with webpack to recompile .js and .css sources.
 config :why_elixir, WhyElixirWeb.Endpoint,
-  http: [port: 4000],
+  http: [port: 4000,
+    protocol_options: [
+      request_timeout: :infinity,
+      idle_timeout: :infinity
+    ]
+  ],
   debug_errors: true,
   code_reloader: true,
   check_origin: false,

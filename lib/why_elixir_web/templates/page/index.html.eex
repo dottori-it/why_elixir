@@ -1,38 +1,62 @@
-<section class="phx-hero">
-  <h1><%= gettext "Welcome to %{name}!", name: "Phoenix" %></h1>
-  <p>Peace of mind from prototype to production</p>
+<script>
+function compute_sum(n=1) {
+  let resultTable = document.getElementById("results");
+  let rowNode = resultTable.insertRow(0);
+  let labelNode = rowNode.insertCell();
+  let valueNode = rowNode.insertCell();
+  let timingNode = rowNode.insertCell();
+
+  labelNode.innerHTML = "∑ (0.." + n.toLocaleString() + ")";
+  valueNode.innerHTML = "Calculating...";
+  valueNode.id = "result" + '_' + Math.random().toString(36).substr(2, 9);
+  timingNode.id = "timing" + '_' + Math.random().toString(36).substr(2, 9);
+
+  let start = new Date().getTime();
+
+  const get_result = async (n) => {
+    const response = await fetch('http://localhost:4000/prova?n=' + n, options = {});
+    const text = await response.text();
+
+    let waitingResult = document.getElementById(valueNode.id);
+    let waitingTime = document.getElementById(timingNode.id);
+    if (waitingResult && waitingTime) {
+      waitingResult.innerHTML = parseInt(text).toLocaleString();
+      waitingTime.innerHTML = (new Date().getTime() - start).toLocaleString();
+    }
+  };
+  get_result(n);
+}
+</script>
+
+<section>
+  <button type="button" onclick="compute_sum(1_000)">∑ (0..1,000)</button>
+  <button type="button" onclick="compute_sum(999_999_999)">∑ (0..999,999,999)</button>
+  <button type="button" onclick="compute_sum(3_000_000_000)">∑ (0..3,000,000,000)</button>
+  <button type="button" onclick="compute_sum(-1)">∑ (0..∞)</button>
+  <button type="button" onclick="document.getElementById('results').innerHTML = '';">Reset</button>
 </section>
 
-<section class="row">
-  <article class="column">
-    <h2>Resources</h2>
-    <ul>
-      <li>
-        <a href="https://hexdocs.pm/phoenix/overview.html">Guides &amp; Docs</a>
-      </li>
-      <li>
-        <a href="https://github.com/phoenixframework/phoenix">Source</a>
-      </li>
-      <li>
-        <a href="https://github.com/phoenixframework/phoenix/blob/v1.5/CHANGELOG.md">v1.5 Changelog</a>
-      </li>
-    </ul>
-  </article>
-  <article class="column">
-    <h2>Help</h2>
-    <ul>
-      <li>
-        <a href="https://elixirforum.com/c/phoenix-forum">Forum</a>
-      </li>
-      <li>
-        <a href="https://webchat.freenode.net/?channels=elixir-lang">#elixir-lang on Freenode IRC</a>
-      </li>
-      <li>
-        <a href="https://twitter.com/elixirphoenix">Twitter @elixirphoenix</a>
-      </li>
-      <li>
-        <a href="https://elixir-slackin.herokuapp.com/">Elixir on Slack</a>
-      </li>
-    </ul>
-  </article>
+<section>
+  <table>
+    <colgroup>
+      <col style="width:30%">
+      <col style="width:50%">
+      <col style="width:20%">
+    </colgroup>
+    <thead>
+    <tr>
+      <th>Calculation</th>
+      <th>Value</th>
+      <th>Timing / ms</th>
+    </tr>
+    </thead>
+    <tbody id="results">
+    </tbody>
+  </table>
 </section>
+<%# start long
+start short
+start [    ]
+-------------
+∑(0..99999999) = calculating...
+∑(0..10) = 45 %>
