@@ -8,11 +8,17 @@ defmodule WhyElixirWeb.PageController do
   def prova(conn, params) do
     %{"n" => n} = params
 
-    tot = 1..String.to_integer(n)
-    |> Enum.reduce(fn a, b ->
-      a + b
-    end)
+    tot = sum_numbers(0, String.to_integer(n), 0)
 
     text(conn, "ciao #{tot}")
   end
+
+  defp sum_numbers(current, limit, sum) do
+    if (current <= limit) do
+      sum_numbers(current + 1, limit, sum + current)
+    else
+      sum
+    end
+  end
+
 end
