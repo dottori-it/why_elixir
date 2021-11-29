@@ -2,20 +2,20 @@ defmodule WhyElixirWeb.PageController do
   use WhyElixirWeb, :controller
 
   def index(conn, _params) do
-    render(conn, "index.html")
+    render(conn, "altro.html")
   end
 
   def prova(conn, params) do
     %{"n" => n} = params
 
-    tot = sum_numbers(0, String.to_integer(n), 0)
+    tot = sum_numbers(String.to_integer(n), 0)
 
-    text(conn, "ciao #{tot}")
+    text(conn, "#{tot}")
   end
 
-  defp sum_numbers(current, limit, sum) do
-    if (current <= limit) do
-      sum_numbers(current + 1, limit, sum + current)
+  defp sum_numbers(current, sum) do
+    if (current != 0) do
+      sum_numbers(current - 1, sum + current)
     else
       sum
     end
