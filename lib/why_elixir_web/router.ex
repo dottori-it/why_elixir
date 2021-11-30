@@ -17,7 +17,7 @@ defmodule WhyElixirWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
-    get "/prova", PageController, :prova
+    get "/summation", PageController, :summation
   end
 
   # Other scopes may use custom stacks.

@@ -1,5 +1,8 @@
 <script>
+function get_id() { Math.random().toString(36).substr(2, 9); }
+
 function compute_sum(n=1) {
+  let elem_id = get_id();
   let resultTable = document.getElementById("results");
   let rowNode = resultTable.insertRow(0);
   let labelNode = rowNode.insertCell();
@@ -8,13 +11,13 @@ function compute_sum(n=1) {
 
   labelNode.innerHTML = "∑ (0.." + n.toLocaleString() + ")";
   valueNode.innerHTML = "Calculating...";
-  valueNode.id = "result" + '_' + Math.random().toString(36).substr(2, 9);
-  timingNode.id = "timing" + '_' + Math.random().toString(36).substr(2, 9);
+  valueNode.id = "result_" + elem_id;
+  timingNode.id = "timing_" + elem_id;
 
   let start = new Date().getTime();
 
   const get_result = async (n) => {
-    const response = await fetch('http://localhost:4000/prova?n=' + n, options = {});
+    const response = await fetch('http://localhost:4000/summation?n=' + n, options = {});
     const text = await response.text();
 
     let waitingResult = document.getElementById(valueNode.id);
@@ -26,14 +29,22 @@ function compute_sum(n=1) {
   };
   get_result(n);
 }
+
+function reset() {
+  document.getElementById('results').innerHTML = '';
+}
+
+function jitter(n, p=0.1) {
+  return Math.round(n * (1 + p * (Math.random() - 0.5)))
+}
 </script>
 
 <section>
-  <button type="button" onclick="compute_sum(1_000)">∑ (0..1,000)</button>
-  <button type="button" onclick="compute_sum(999_999_999)">∑ (0..999,999,999)</button>
-  <button type="button" onclick="compute_sum(3_000_000_000)">∑ (0..3,000,000,000)</button>
+  <button type="button" onclick="compute_sum(jitter(1_000))">∑ (0..~1,000)</button>
+  <button type="button" onclick="compute_sum(jitter(1_000_000))">∑ (0..~1,000,000)</button>
+  <button type="button" onclick="compute_sum(jitter(1_000_000_000))">∑ (0..~1,000,000,000)</button>
   <button type="button" onclick="compute_sum(-1)">∑ (0..∞)</button>
-  <button type="button" onclick="document.getElementById('results').innerHTML = '';">Reset</button>
+  <button type="button" onclick="reset()">Reset</button>
 </section>
 
 <section>

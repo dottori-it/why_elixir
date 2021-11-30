@@ -5,7 +5,7 @@ defmodule WhyElixirWeb.PageController do
     render(conn, "index.html")
   end
 
-  def prova(conn, params) do
+  def summation(conn, params) do
     %{"n" => n} = params
 
     tot = sum_numbers(String.to_integer(n), 0)
