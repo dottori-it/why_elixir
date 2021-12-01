@@ -13,6 +13,10 @@ defmodule WhyElixirWeb.PageController do
     text(conn, "#{tot}")
   end
 
+  defp sum_numbers(1, 0) do
+    1
+  end
+
   defp sum_numbers(current, sum) do
     case current do
       0 -> sum
