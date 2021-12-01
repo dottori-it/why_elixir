@@ -3,10 +3,11 @@ let count = 0
 
 function get_id() { return window.performance.now().toFixed(2).toString().replace(".", ""); }
 
-function compute_sum(n=1) {
+function compute_sum(n=1, color='green') {
   let elem_id = get_id();
   let resultTable = document.getElementById("results");
   let rowNode = resultTable.insertRow(0);
+  rowNode.style = "background-color: " + color;
   let labelNode = rowNode.insertCell();
   let valueNode = rowNode.insertCell();
   let timingNode = rowNode.insertCell();
@@ -48,20 +49,21 @@ function jitter(n, p=0.1) {
 </script>
 
 <section>
-  <button type="button" onclick="compute_sum(1)">∑ (0..1)</button>
-  <button type="button" onclick="compute_sum(jitter(1_000_000))">∑ (0..~1,000,000)</button>
-  <button type="button" onclick="compute_sum(jitter(1_000_000_000))">∑ (0..~1,000,000,000)</button>
-  <button type="button" onclick="compute_sum(-1)">∑ (0..∞)</button>
-  <button type="button" onclick="reset()">Reset</button>
+  <label style="display: inline; margin-right: 1em;">∑(0..n)</label>
+  <button type="button" onclick="compute_sum(1, '#e6fffa')" style="background-color: #e6fffa; color: black">Fastest</button>
+  <button type="button" onclick="compute_sum(jitter(1_000_000), ' #e6ffe6')" style="background-color: #e6ffe6; color: black">Fast</button>
+  <button type="button" onclick="compute_sum(jitter(1_000_000_000), '#ffffe6')" style="background-color: #ffffe6; color: black">Slow</button>
+  <button type="button" onclick="compute_sum(-1, '#ffe6e6')" style="background-color: #ffe6e6; color: black">Infinite</button>
+  <button type="button" onclick="reset()" style="margin-left: 12em;">Reset</button>
 </section>
 
 <section>
-  <dl>
+  <dl id="result-pending">
     <dt>Pending Requests</dt>
     <dd id="pending">0</dd>
   </dl>
 
-  <table>
+  <table id="result-table">
     <colgroup>
       <col style="width:30%">
       <col style="width:50%">
@@ -78,9 +80,3 @@ function jitter(n, p=0.1) {
     </tbody>
   </table>
 </section>
-<%# start long
-start short
-start [    ]
--------------
-∑(0..99999999) = calculating...
-∑(0..10) = 45 %>
