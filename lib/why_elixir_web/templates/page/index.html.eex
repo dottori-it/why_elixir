@@ -1,5 +1,6 @@
 <script>
 let count = 0
+const ERROR = "ERROR!";
 
 function get_id() { return window.performance.now().toFixed(2).toString().replace(".", ""); }
 
@@ -22,17 +23,24 @@ function compute_sum(n=1, color='green') {
   document.getElementById("pending").innerHTML = count;
 
   const get_result = async (n) => {
-    const response = await fetch('http://localhost:4000/summation?n=' + n, options = {});
-    const text = await response.text();
-    let stop = window.performance.now();
-    let waitingResult = document.getElementById(valueNode.id);
-    let waitingTime = document.getElementById(timingNode.id);
-    if (waitingResult && waitingTime) {
-      waitingResult.innerHTML = parseInt(text).toLocaleString();
-      waitingTime.innerHTML = (stop - start).toLocaleString();
-      count -= 1;
-      document.getElementById("pending").innerHTML = count;
+    let text;
+    try {
+      const response = await fetch('http://localhost:4000/summation?n=' + n, options = {});
+      text = await response.text();
+    } catch (error) {
+      text = ERROR;
+    } finally {
+      let stop = window.performance.now();
+      let waitingResult = document.getElementById(valueNode.id);
+      let waitingTime = document.getElementById(timingNode.id);
+      if (waitingResult && waitingTime) {
+        waitingResult.innerHTML = text == ERROR ? text : parseInt(text).toLocaleString();
+        waitingTime.innerHTML = (stop - start).toLocaleString();
+        count -= 1;
+        document.getElementById("pending").innerHTML = count;
+      }
     }
+
   };
   get_result(n);
 }
@@ -49,12 +57,12 @@ function jitter(n, p=0.1) {
 </script>
 
 <section>
-  <label style="display: inline; margin-right: 1em;">∑(0..n)</label>
-  <button type="button" onclick="compute_sum(1, '#e6fffa')" style="background-color: #e6fffa; color: black">Fastest</button>
-  <button type="button" onclick="compute_sum(jitter(1_000_000), ' #e6ffe6')" style="background-color: #e6ffe6; color: black">Fast</button>
-  <button type="button" onclick="compute_sum(jitter(1_000_000_000), '#ffffe6')" style="background-color: #ffffe6; color: black">Slow</button>
-  <button type="button" onclick="compute_sum(-1, '#ffe6e6')" style="background-color: #ffe6e6; color: black">Infinite</button>
-  <button type="button" onclick="reset()" style="margin-left: 12em;">Reset</button>
+  <label style="display: inline; margin-right: 0.5em;">∑(0..n)</label>
+  <button type="button" onclick="compute_sum(1, '#e6fffa')" style="background-color: #e6fffa; color: black">Fastest &#183; n=1</button>
+  <button type="button" onclick="compute_sum(jitter(1_000_000), ' #e6ffe6')" style="background-color: #e6ffe6; color: black">Fast &#183; n=10⁶</button>
+  <button type="button" onclick="compute_sum(jitter(1_000_000_000), '#ffffe6')" style="background-color: #ffffe6; color: black">Slow &#183; n=10⁹</button>
+  <button type="button" onclick="compute_sum(-1, '#ffe6e6')" style="background-color: #ffe6e6; color: black">Infinite &#183; n=-1</button>
+  <button type="button" onclick="reset()" style="margin-left: 1em;">Reset</button>
 </section>
 
 <section>

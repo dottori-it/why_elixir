@@ -1,8 +1,13 @@
 /* This file is for your main application css. */
 @import "./phoenix.css";
 
+label { text-transform: uppercase; }
+
 button {
+  padding-left: 1em;
+  padding-right: 1em;
   border: 1px solid gray;
+  font-size: 90%;
 }
 
 /* Alerts and form errors */
@@ -53,7 +58,9 @@ dl#result-pending dt, dl#result-pending dd {
 dl#result-pending {
   display: block;
   margin: 2ex auto;
+  margin-top: 0.5ex;
   padding: 0.25ex 1ex;
   border-bottom: 1px solid black;
   text-align: center;
+  font-size: 110%;
 }
