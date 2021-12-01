@@ -1,5 +1,5 @@
 <script>
-function get_id() { Math.random().toString(36).substr(2, 9); }
+function get_id() { return window.performance.now().toFixed(2).toString().replace(".", ""); }
 
 function compute_sum(n=1) {
   let elem_id = get_id();
