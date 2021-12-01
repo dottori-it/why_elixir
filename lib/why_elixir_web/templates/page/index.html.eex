@@ -1,4 +1,6 @@
 <script>
+let count = 0
+
 function get_id() { return window.performance.now().toFixed(2).toString().replace(".", ""); }
 
 function compute_sum(n=1) {
@@ -14,17 +16,22 @@ function compute_sum(n=1) {
   valueNode.id = "result_" + elem_id;
   timingNode.id = "timing_" + elem_id;
 
-  let start = new Date().getTime();
+  let start = window.performance.now();
+  count += 1;
+  document.getElementById("pending").innerHTML = count;
 
   const get_result = async (n) => {
     const response = await fetch('http://localhost:4000/summation?n=' + n, options = {});
     const text = await response.text();
+    count -= 1;
+    document.getElementById("pending").innerHTML = count;
 
+    let stop = window.performance.now();
     let waitingResult = document.getElementById(valueNode.id);
     let waitingTime = document.getElementById(timingNode.id);
     if (waitingResult && waitingTime) {
       waitingResult.innerHTML = parseInt(text).toLocaleString();
-      waitingTime.innerHTML = (new Date().getTime() - start).toLocaleString();
+      waitingTime.innerHTML = (stop - start).toLocaleString();
     }
   };
   get_result(n);
@@ -48,6 +55,11 @@ function jitter(n, p=0.1) {
 </section>
 
 <section>
+  <dl>
+    <dt>Pending Requests</dt>
+    <dd id="pending">0</dd>
+  </dl>
+
   <table>
     <colgroup>
       <col style="width:30%">
