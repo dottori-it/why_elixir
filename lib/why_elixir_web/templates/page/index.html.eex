@@ -48,7 +48,7 @@ function jitter(n, p=0.1) {
 </script>
 
 <section>
-  <button type="button" onclick="compute_sum(jitter(1_000))">∑ (0..~1,000)</button>
+  <button type="button" onclick="compute_sum(1)">∑ (0..1)</button>
   <button type="button" onclick="compute_sum(jitter(1_000_000))">∑ (0..~1,000,000)</button>
   <button type="button" onclick="compute_sum(jitter(1_000_000_000))">∑ (0..~1,000,000,000)</button>
   <button type="button" onclick="compute_sum(-1)">∑ (0..∞)</button>
